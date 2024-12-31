@@ -1,0 +1,4 @@
+2024-11-21T02:11:28.342Z [error]: Server error: Task validation failed: priority: `Alta` is not a valid enum value for path `priority`., type: `personal` is not a valid enum value for path `type`.
+2024-12-31T13:44:17.110Z [error]: Task is not defined
+2024-12-31T13:45:52.652Z [error]: Task is not defined
+2024-12-31T13:50:43.361Z [error]: Task is not defined

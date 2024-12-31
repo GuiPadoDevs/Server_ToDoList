@@ -13,17 +13,22 @@ const Task = new Schema({
     },
     priority: {
         type: String,
+        enum: ['High', 'Medium', 'Low'],
         required: true
     },
     type: {
         type: String,
-        enum: ['work', 'personal', 'study'],
+        enum: ['Work', 'Personal', 'Study'],
         required: true
     },
     term: {
         type: Date,
         required: true
     },
+    completed: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const task = mongoose.model('Task', Task);

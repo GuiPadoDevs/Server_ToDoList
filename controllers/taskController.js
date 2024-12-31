@@ -1,13 +1,23 @@
 const path = require('path');
 const fs = require('fs');
-const TaskController = require("../models/task")
+const Task = require("../models/task")
 const jwt = require("jsonwebtoken")
 const ExcelJS = require('exceljs')
 
 module.exports = {
     Create: async (name, description, priority, type, term) => {
+        const newTask = new Task({
+            name,
+            description,
+            priority,
+            type,
+            term,
+            completed: false
+        });
+
         try {
-            return await TaskController.create({ name, description, priority, type, term })
+            const savedTask = await newTask.save();
+            return savedTask;
         } catch (e) {
             console.log(e.Stack)
             return { erro: "Create task error" }
@@ -16,16 +26,25 @@ module.exports = {
 
     List: async () => {
         try {
-            return await TaskController.find()
+            return await Task.find()
         } catch (e) {
             console.log(e.Stack)
             return { erro: "List task error" }
         }
     },
 
+    FindById: async (id) => {
+        try {
+            return await Task.findById(id)
+        } catch (e) {
+            console.log(e.Stack)
+            return { erro: "FindById task error" }
+        }
+    },
+
     ExportToExcel: async () => {
         try {
-            const tasks = await TaskController.find()
+            const tasks = await Task.find()
             const workbook = new ExcelJS.Workbook()
             const worksheet = workbook.addWorksheet('Tasks')
 
@@ -56,7 +75,7 @@ module.exports = {
 
     Aggregate: async (userId) => {
         try {
-            return await TaskController.aggregate([
+            return await Task.aggregate([
                 { $match: { userId } },
                 { $group: { _id: '$status', count: { $sum: 1 } } },
             ])
@@ -68,7 +87,7 @@ module.exports = {
 
     Update: async (id, name, description, priority, type, term) => {
         try {
-            return await TaskController.findByIdAndUpdate(id, { name, description, priority, type, term }, { new: true })
+            return await Task.findByIdAndUpdate(id, { name, description, priority, type, term }, { new: true })
         } catch (e) {
             console.log(e.Stack)
             return { erro: "Update task error" }
@@ -77,7 +96,7 @@ module.exports = {
 
     Delete: async (id) => {
         try {
-            return await TaskController.findByIdAndDelete(id)
+            return await Task.findByIdAndDelete(id)
         } catch (e) {
             console.log(e.Stack)
             return { erro: "Delete task error" }

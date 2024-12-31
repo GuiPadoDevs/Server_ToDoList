@@ -2,6 +2,7 @@ const express = require("express");
 const authMiddleware = require("../middleware/authMiddleware");
 const route = express.Router();
 const Task = require("../controllers/taskController");
+const logger = require('../logger');
 
 route.use(authMiddleware);
 
@@ -69,14 +70,33 @@ route.post("/task", async (req, res) => {
         if (term == "" || term == undefined)
             return res.send({ erro: "Term can't null." })
 
+        logger.log('Creating task with data:', { name, description, priority, type, term, user });
+
         var returnAPI = await Task.Create(name, description, priority, type, term, user)
+        logger.log('Task created:', returnAPI);
         return res.send(returnAPI)
     }
     catch(e) {
-        console.log(e)
+        logger.error(e)
         return res.send('Erro: ' + e)
     }
 })
+
+route.put('/task/complete/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const task = await Task.FindById(id);
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        task.completed = true;
+        await task.save();
+        res.json(task);
+    } catch (error) {
+        logger.error('Server error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 route.put("/task", async (req, res) => {
     const { id, name, description, priority, type, term } = req.body
