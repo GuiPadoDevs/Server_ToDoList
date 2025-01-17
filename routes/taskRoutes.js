@@ -10,7 +10,7 @@ route.get("/task/:name_task?", async (req, res) => {
     const user = req.userId
     const name_task = req.params.name_task || req.query.name_task || ""
 
-    var returnAPI = await Task.List(user, name_task)
+    var returnAPI = await Task.List(user)
 
     return res.send(returnAPI)
 })

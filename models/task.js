@@ -28,6 +28,11 @@ const Task = new Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 });
 

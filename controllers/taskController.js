@@ -24,9 +24,9 @@ module.exports = {
         }
     },
 
-    List: async () => {
+    List: async (userID) => {
         try {
-            return await Task.find()
+            return await Task.find({ userID })
         } catch (e) {
             console.log(e.Stack)
             return { erro: "List task error" }
