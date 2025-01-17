@@ -12,7 +12,8 @@ module.exports = {
             priority,
             type,
             term,
-            completed: false
+            completed: false,
+            userID: jwt.decode(localStorage.getItem('token')).id
         });
 
         try {
