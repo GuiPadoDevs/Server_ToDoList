@@ -34,5 +34,3 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log("MongoDB conectado!");
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 }).catch((error) => console.log(`Erro ao conectar ao MongoDB: ${error}`));
-
-module.exports = app; // Exporta o app para Vercel
