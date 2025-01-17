@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 app.use(cors({
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(authMiddleware);
 
 // Rotas
 app.use('/api/auth', require('./routes/authRoutes'));
