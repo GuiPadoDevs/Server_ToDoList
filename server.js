@@ -65,11 +65,10 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(authMiddleware);
 
 // Rotas
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/tasks', authMiddleware, require('./routes/taskRoutes'));
 
 const PORT = process.env.PORT || 5001;
 
