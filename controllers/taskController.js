@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const ExcelJS = require('exceljs')
 
 module.exports = {
-    Create: async (name, description, priority, type, term) => {
+    Create: async (name, description, priority, type, term, user) => {
         const newTask = new Task({
             name,
             description,
@@ -13,7 +13,7 @@ module.exports = {
             type,
             term,
             completed: false,
-            userID: jwt.decode(localStorage.getItem('token')).id
+            userID: user
         });
 
         try {
